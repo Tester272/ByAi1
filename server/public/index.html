@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+    <meta name="theme-color" content="#0b0f17" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>MobileAgent</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand"><span class="dot"></span> MobileAgent</div>
+      <div id="status" class="status">ready</div>
+    </header>
+
+    <main id="view-chat" class="view active">
+      <div id="messages" class="messages">
+        <div class="empty">
+          <h2>Your on-device AI agent</h2>
+          <p>It can read any website, call any API, drive apps like Gmail/Slack/GitHub, remember things, and run long background tasks.</p>
+          <div class="chips">
+            <button class="chip" data-prompt="Search the web for the latest AI agent news and summarise the top 3 results.">Web research</button>
+            <button class="chip" data-prompt="Fetch https://example.com and tell me what it says.">Read a page</button>
+            <button class="chip" data-prompt="Start a long task: research the best budget smartphones of 2025 and write a comparison report.">Long task</button>
+          </div>
+        </div>
+      </div>
+      <form id="chat-form" class="composer">
+        <textarea id="chat-input" rows="1" placeholder="Ask your agent to do something…"></textarea>
+        <button id="send" type="submit" aria-label="Send">➤</button>
+      </form>
+    </main>
+
+    <main id="view-tasks" class="view">
+      <form id="task-form" class="card">
+        <label>New long task</label>
+        <textarea id="task-goal" rows="2" placeholder="e.g. Monitor a topic daily and summarise"></textarea>
+        <div class="row">
+          <input id="task-steps" type="number" min="1" max="200" value="25" title="Max steps" />
+          <button type="submit">Create task</button>
+        </div>
+      </form>
+      <div id="task-list" class="list"></div>
+    </main>
+
+    <main id="view-settings" class="view">
+      <form id="settings-form" class="card">
+        <h3>API keys</h3>
+        <p class="hint">Bring your own keys. Stored on your server, never sent anywhere else.</p>
+        <label>LLM provider</label>
+        <select id="s-provider">
+          <option value="openai">OpenAI</option>
+          <option value="anthropic">Anthropic (Claude)</option>
+          <option value="gemini">Google Gemini</option>
+          <option value="openai-compatible">OpenAI-compatible (Groq, OpenRouter, Ollama…)</option>
+        </select>
+        <label>Model</label>
+        <input id="s-model" placeholder="gpt-4o-mini" />
+        <label>Base URL <span class="muted">(only for OpenAI-compatible)</span></label>
+        <input id="s-baseurl" placeholder="https://api.openai.com/v1" />
+        <label>LLM API key</label>
+        <input id="s-apikey" type="password" placeholder="sk-…" autocomplete="off" />
+        <label>Composio API key <span class="muted">(enables any app)</span></label>
+        <input id="s-composio" type="password" placeholder="optional" autocomplete="off" />
+        <label>Tavily API key <span class="muted">(better web search)</span></label>
+        <input id="s-tavily" type="password" placeholder="optional" autocomplete="off" />
+        <button type="submit">Save</button>
+      </form>
+      <div class="card">
+        <h3>Memory</h3>
+        <div id="memory-list" class="list small"></div>
+      </div>
+    </main>
+
+    <nav class="tabbar">
+      <button data-tab="chat" class="active">Chat</button>
+      <button data-tab="tasks">Tasks</button>
+      <button data-tab="settings">Settings</button>
+    </nav>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
