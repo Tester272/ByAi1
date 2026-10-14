@@ -4,6 +4,8 @@
 import http from 'node:http';
 
 const port = Number(process.argv[2] || 9911);
+const delayMs = Number(process.env.MOCK_DELAY_MS || 0);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const server = http.createServer((req, res) => {
   if (req.method !== 'POST' || !req.url.includes('/chat/completions')) {
@@ -12,7 +14,8 @@ const server = http.createServer((req, res) => {
   }
   let body = '';
   req.on('data', (c) => (body += c));
-  req.on('end', () => {
+  req.on('end', async () => {
+    if (delayMs) await sleep(delayMs);
     let payload = {};
     try {
       payload = JSON.parse(body);
