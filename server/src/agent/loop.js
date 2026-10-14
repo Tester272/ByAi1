@@ -37,6 +37,9 @@ export async function runAgentLoop({
 }) {
   const transcript = [...messages];
   const tools = registry.list({ exclude: excludeTools });
+  // A single shared context object so tools can signal completion (ctx.finished)
+  // and read the live transcript without mutating the caller's object.
+  const toolCtx = { ...ctx, transcript };
   let steps = 0;
 
   for (let step = 1; step <= maxSteps; step++) {
@@ -64,7 +67,8 @@ export async function runAgentLoop({
       let result;
       let error = false;
       try {
-        result = await registry.execute(tc.name, tc.args, { ...ctx, transcript });
+        toolCtx.transcript = transcript;
+        result = await registry.execute(tc.name, tc.args, toolCtx);
       } catch (e) {
         error = true;
         result = { error: e.message };
@@ -76,8 +80,8 @@ export async function runAgentLoop({
         name: tc.name,
         content: stringifyResult(result),
       });
-      if (ctx.finished) {
-        return { done: true, content: ctx.finished.result, transcript, steps, finishedByTool: true };
+      if (toolCtx.finished) {
+        return { done: true, content: toolCtx.finished.result, transcript, steps, finishedByTool: true };
       }
     }
 
