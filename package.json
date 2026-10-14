@@ -1,0 +1,13 @@
+{
+  "name": "mobile-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MobileAgent - a bring-your-own-key AI agent for mobile that can use any app or website and run long tasks.",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix mobile install",
+    "server": "npm --prefix server start",
+    "dev": "npm --prefix server run dev",
+    "test": "npm --prefix server test"
+  },
+  "license": "MIT"
+}
