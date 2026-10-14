@@ -7,7 +7,10 @@
     "install:all": "npm --prefix server install && npm --prefix mobile install",
     "server": "npm --prefix server start",
     "dev": "npm --prefix server run dev",
-    "test": "npm --prefix server test"
+    "mock-llm": "node server/scripts/mock-llm.js",
+    "test": "npm --prefix server test && npm --prefix mobile test",
+    "test:server": "npm --prefix server test",
+    "test:mobile": "npm --prefix mobile test"
   },
   "license": "MIT"
 }
